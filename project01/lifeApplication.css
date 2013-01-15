@@ -2,9 +2,21 @@
 
 #lifeBox {
 	border-style:solid;
+
 }
 
 #menuBar {
 	background-color: black;
 	color: white;
+}
+
+
+#heading {
+	background-color: gray;
+
+}
+
+#menuBar {
+	word-spacing: 1em;
+	padding-left: 1em;
 }
