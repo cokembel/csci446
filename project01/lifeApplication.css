@@ -23,7 +23,6 @@ h4 {
 }
 
 #menuBar {
-
 	padding-top: 1%;
 	padding-bottom: 1%;
 	padding-left: 1em;
@@ -39,7 +38,7 @@ h4 {
 	padding-bottom: .1em;
 	padding-left: 1%;
 	background-color: #F2F2F2;
-	font-weight: 580;
+	font-weight: 500;
 }
 
 #submitButton {
