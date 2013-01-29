@@ -3,15 +3,23 @@ require 'rack'
 
 class Albums
   
-  @albums = Array.new;
-
   def call(env)
   	request = Rack::Request.new(env)
-  	case request.path 
+
+
+  	case request.path
+  	when "/form" then render_form(request)
   	when "/display_list" then render_list(request)
   	end
+  	
 
-    #[200, {"Content-Type" => "text/plain"}, ["Hello from Rack!"]]
+  #[200, {"Content-Type" => "text/plain"}, ["Hello from Rack!"]]
+  end
+
+  def render_form(request)
+  	  	response = Rack::Response.new
+  	File.open("albumForm.html", "rb") { |form| response.write(form.read)}
+  	response.finish
   end
 
   def render_list(request)
@@ -19,10 +27,8 @@ class Albums
   	response.finish
   end
 
-  def readAlbums
-  	albums = File.read('top_100_albums.txt')
   
-  end
+
 end
 
 Rack::Handler::WEBrick.run Albums.new, :Port => 8080
