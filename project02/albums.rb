@@ -6,7 +6,14 @@ class Albums
   @values 
 
   def initialize
-  	@values = File.readlines('top_100_albums.txt', "rb")
+  	@values = IO.readlines('top_100_albums.txt')
+
+  	@values.each { |line| line.chomp
+
+  	 }
+  	@values.each { |line| line.split(",",2)
+  		puts line[0]
+  	}
 
   end
 
@@ -44,27 +51,24 @@ class Albums
 
   	#sorted_values = sortAlbums(sort,rank)
 
-  	#count = 1
-  #	sorted_values.each do |x| 
-  		#response.write("<li> Hi </li>")
-  		#response.write("<li> #{count}  #{x.values[0]}   #{x.values[1]} </li>")
-  		#count += 1
-  #	end
+ 	@values.each { |x| 
+  		response.write("<li> #{x.values[0]}   #{x.values[1]} </li>")
+  	}
 
   	response.write("</ol>")
   	response.write("</body></html>")
   	response.finish
   end
-
+=begin
   def sortAlbums(sort,rank)
 
   	case sort
   	when "rank" then return @values
   	when "name" then return @values#.sort { |x,y| x[0] < y[0]}
   	when "year" then return @values#.sort { |x,y| x[1] < y[1]}
-  	end
-  end
-
+  	end 
+   end
+=end
   
 	  	
 end
