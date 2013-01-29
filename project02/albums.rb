@@ -3,6 +3,13 @@ require 'rack'
 
 class Albums
   
+  @values 
+
+  def initialize
+  	@values = File.readlines('top_100_albums.txt', "rb")
+
+  end
+
   def call(env)
   	request = Rack::Request.new(env)
 
@@ -17,18 +24,49 @@ class Albums
   end
 
   def render_form(request)
-  	  	response = Rack::Response.new
+  	 response = Rack::Response.new
   	File.open("albumForm.html", "rb") { |form| response.write(form.read)}
   	response.finish
   end
 
   def render_list(request)
-  	response = Rack::Response.new(request.path)
+  	 response = Rack::Response.new
+  	File.open("sortedList.html", "rb") { |form| response.write(form.read)}
+
+  	get_values = request.GET()
+
+  	sort = get_values['sortBy']
+  	rank = get_values['rank']
+
+  	response.write("<h3>Sorted By #{sort}</h3>");
+
+    response.write("<ol>")
+
+  	#sorted_values = sortAlbums(sort,rank)
+
+  	#count = 1
+  #	sorted_values.each do |x| 
+  		#response.write("<li> Hi </li>")
+  		#response.write("<li> #{count}  #{x.values[0]}   #{x.values[1]} </li>")
+  		#count += 1
+  #	end
+
+  	response.write("</ol>")
+  	response.write("</body></html>")
   	response.finish
   end
 
-  
+  def sortAlbums(sort,rank)
 
+  	case sort
+  	when "rank" then return @values
+  	when "name" then return @values#.sort { |x,y| x[0] < y[0]}
+  	when "year" then return @values#.sort { |x,y| x[1] < y[1]}
+  	end
+  end
+
+  
+	  	
 end
 
 Rack::Handler::WEBrick.run Albums.new, :Port => 8080
