@@ -12,7 +12,6 @@ class Albums
   	values.each { |line| line.chomp }
 
   	values.each { |line| line = line.split(",")
-  		puts line.at(0)  + line.at(1)
       @album_hash[line.at(0)] = line.at(1)
   	}
 
@@ -27,18 +26,38 @@ class Albums
   	when "/display_list" then render_list(request)
   	end
   	
-
-  #[200, {"Content-Type" => "text/plain"}, ["Hello from Rack!"]]
   end
 
   def render_form(request)
-  	 response = Rack::Response.new
-  	File.open("albumForm.html", "rb") { |form| response.write(form.read)}
+  	response = Rack::Response.new
+
+    lines = IO.readlines('albumForm.html')
+
+    lines.each do |line|
+      if line.include? "<<option>>"
+        puts "HERE"
+        (1..100).each do |i| 
+          response.write("<option value=\"#{i}\">#{i}</option>")
+        end
+      else
+        response.write(line)
+      end
+    end
+
+=begin
+  	File.open("albumForm.html", "rb") { |form| 
+      if ( form.include? "")
+      response.write(form.read)
+
+
+    }
+=end
   	response.finish
   end
 
   def render_list(request)
-  	 response = Rack::Response.new
+  	response = Rack::Response.new
+
   	File.open("sortedList.html", "rb") { |form| response.write(form.read)}
 
   	get_values = request.GET()
