@@ -11,10 +11,11 @@ class Albums
   	@values.each { |line| line.chomp
 
   	 }
-  	@values.each { |line| line.split(",",2)
-  		puts line[0]
+=begin
+  	@values.each { |line| line = line.split(",")
+  		puts line.at(0)  + line.at(1)
   	}
-
+=end
   end
 
   def call(env)
@@ -50,11 +51,16 @@ class Albums
     response.write("<ol>")
 
   	#sorted_values = sortAlbums(sort,rank)
+  @values.each { |line| line = line.split(",")
+      puts line.at(0)  + line.at(1)
+      response.write("<li>" + line.at(0) + line.at(1) + "</li>")
 
+    }
+=begin
  	@values.each { |x| 
-  		response.write("<li> #{x.values[0]}   #{x.values[1]} </li>")
+  		response.write("<li>" + x.at(0) + x.at(1) + "</li>")
   	}
-
+=end
   	response.write("</ol>")
   	response.write("</body></html>")
   	response.finish
