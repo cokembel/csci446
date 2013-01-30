@@ -71,8 +71,15 @@ class Albums
 
   	sorted_values = sortAlbums(sort,rank)
 
-    sorted_values.each { |album_name, year| 
-      response.write("<li>" + album_name + year + "</li>")
+    count = 1;
+    sorted_values.each { |album_name, year|
+      if count == rank.to_i
+        response.write("<li style=\"background-color:yellow\">" + album_name + year + "</li>")
+      else 
+        response.write("<li>" + album_name + year + "</li>")
+      end
+
+      count += 1
     }
 =begin
  	@values.each { |x| 
