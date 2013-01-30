@@ -3,19 +3,19 @@ require 'rack'
 
 class Albums
   
-  @values 
+  @album_hash 
 
   def initialize
-  	@values = IO.readlines('top_100_albums.txt')
+    @album_hash = Hash.new
+  	values = IO.readlines('top_100_albums.txt')
 
-  	@values.each { |line| line.chomp
+  	values.each { |line| line.chomp }
 
-  	 }
-=begin
-  	@values.each { |line| line = line.split(",")
+  	values.each { |line| line = line.split(",")
   		puts line.at(0)  + line.at(1)
+      @album_hash[line.at(0)] = line.at(1)
   	}
-=end
+
   end
 
   def call(env)
@@ -50,11 +50,10 @@ class Albums
 
     response.write("<ol>")
 
-  	#sorted_values = sortAlbums(sort,rank)
-  @values.each { |line| line = line.split(",")
-      puts line.at(0)  + line.at(1)
-      response.write("<li>" + line.at(0) + line.at(1) + "</li>")
+  	sorted_values = sortAlbums(sort,rank)
 
+    sorted_values.each { |album_name, year| 
+      response.write("<li>" + album_name + year + "</li>")
     }
 =begin
  	@values.each { |x| 
@@ -65,16 +64,16 @@ class Albums
   	response.write("</body></html>")
   	response.finish
   end
-=begin
+
   def sortAlbums(sort,rank)
 
   	case sort
-  	when "rank" then return @values
-  	when "name" then return @values#.sort { |x,y| x[0] < y[0]}
-  	when "year" then return @values#.sort { |x,y| x[1] < y[1]}
+  	when "rank" then return @album_hash
+  	when "name" then return @album_hash.sort_by { |x,y| x}
+  	when "year" then return @album_hash.sort_by { |x,y| y}
   	end 
    end
-=end
+
   
 	  	
 end
