@@ -67,41 +67,33 @@ class Albums
 
   	response.write("<h3>Sorted By #{sort}</h3>");
 
-    response.write("<ol>")
+    response.write("<table>")
 
   	sorted_values = sortAlbums(sort,rank)
 
     count = 1;
-    sorted_values.each { |album_name, year|
+    sorted_values.each do |album_name, year|
       if count == rank.to_i
-        response.write("<li style=\"background-color:yellow\">" + album_name + year + "</li>")
+        response.write("<tr style=\"background-color:yellow\"><td>#{count}</td><td>#{album_name}</td><td>#{year}</td></tr>")
       else 
-        response.write("<li>" + album_name + year + "</li>")
+        response.write("<tr><td>#{count}</td><td>#{album_name}</td><td>#{year}</td></tr>")
       end
 
       count += 1
-    }
-=begin
- 	@values.each { |x| 
-  		response.write("<li>" + x.at(0) + x.at(1) + "</li>")
-  	}
-=end
-  	response.write("</ol>")
+    end
+
+  	response.write("</table>")
   	response.write("</body></html>")
   	response.finish
   end
 
   def sortAlbums(sort,rank)
-
   	case sort
   	when "rank" then return @album_hash
   	when "name" then return @album_hash.sort_by { |x,y| x}
   	when "year" then return @album_hash.sort_by { |x,y| y}
   	end 
    end
-
-  
-	  	
 end
 
 Rack::Handler::WEBrick.run Albums.new, :Port => 8080
