@@ -31,29 +31,7 @@ class Albums
   end
 
   def render_form(request)
-  	response = Rack::Response.new
-
-    lines = IO.readlines('albumForm.html')
-
-    lines.each do |line|
-      if line.include? "<<option>>"
-        puts "HERE"
-        (1..100).each do |i| 
-          response.write("<option value=\"#{i}\">#{i}</option>")
-        end
-      else
-        response.write(line)
-      end
-    end
-
-=begin
-  	File.open("albumForm.html", "rb") { |form| 
-      if ( form.include? "")
-      response.write(form.read)
-
-
-    }
-=end
+  	response = Rack::Response.new(ERB.new(File.read("albumForm.html.erb")).result(binding))
   	response.finish
   end
 
@@ -72,20 +50,6 @@ class Albums
 
     response.write("<table>")
 
-=begin
-  	sorted_values = sortAlbums(sort,rank)
-
-    count = 1;
-    sorted_values.each do |album_name, year|
-      if count == rank.to_i
-        response.write("<tr style=\"background-color:yellow\"><td>#{count}</td><td>#{album_name}</td><td>#{year}</td></tr>")
-      else 
-        response.write("<tr><td>#{count}</td><td>#{album_name}</td><td>#{year}</td></tr>")
-      end
-
-      count += 1
-    end
-=end
     database = SQLite3::Database.new("albums.sqlite3.db")
     database.results_as_hash = true
 
