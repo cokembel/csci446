@@ -1,13 +1,11 @@
 <br/>
-<h3>Sorted by <%= sort %></h3>
+<h3>Sorted by <%= @sort_by %></h3>
 <table>
-	<% albums.each do |album| %>
-	<tr <% if album['rank'].to_i == rank.to_i %>
-		<%= 'style="background-color:yellow"' %>
-		<% end %> >
-		<td><%= album['rank'] %></td>
-		<td><%= album['title'] %> </td>
-		<td><%= album['year'] %> </td>
+	<% @albums.each do |album|  %>
+	<tr >
+		<td><%= album[:rank] %></td>
+		<td><%= album[:title] %> </td>
+		<td><%= album[:year] %> </td>
 	</tr>
 	<% end %>
 </table>
