@@ -1,0 +1,16 @@
+<form action="/display_list" method="POST">
+
+	<label for="sortBy">Sort By</label>
+	<select name="sortBy">
+		<option value="rank">Rank (default)</option>
+		<option value="title">Title</option>
+		<option value="year">Year</optoin>
+	</select>
+	<label for="rank">Select a Rank to Highlight</label>
+	<select name="rank">
+		<% for i in 1..100 %>
+			<option> <%= i %> </option>
+	 	<% end %>
+	</select>
+	<input type="submit" value="Display List">
+</form>
