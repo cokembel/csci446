@@ -1,3 +1,6 @@
+# Cole Kembel
+# albums.rb
+
 require 'sinatra'
 require 'data_mapper'
 require_relative 'album'
