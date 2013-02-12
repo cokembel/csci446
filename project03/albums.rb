@@ -59,7 +59,6 @@ class Albums
 
   def render_list(request)
 
-=begin
   	response = Rack::Response.new
 
   	File.open("sortedList.html", "rb") { |form| response.write(form.read)}
@@ -73,6 +72,7 @@ class Albums
 
     response.write("<table>")
 
+=begin
   	sorted_values = sortAlbums(sort,rank)
 
     count = 1;
@@ -86,10 +86,14 @@ class Albums
       count += 1
     end
 =end
-    database = SQLite3::Database.new("albus.sqlite3")
+    database = SQLite3::Database.new("albums.sqlite3.db")
 
-    database.execute("SELECT * FROM albums") do |album|
-      response.write("<tr><td>#{count}</td><td>#{album}</td><td>#{year}</td></tr>")
+    database.execute("SELECT * FROM albums ORDER BY #{sort}") do |album|
+      if album[0].to_i == rank.to_i
+        response.write("<tr style=\"background-color:yellow\"><td>#{album[0]}</td><td>#{album[1]}</td><td>#{album[2]}</td></tr>")
+      else
+        response.write("<tr><td>#{album[0]}</td><td>#{album[1]}</td><td>#{album[2]}</td></tr>")
+      end
     end
 
   	response.write("</table>")
@@ -97,13 +101,6 @@ class Albums
   	response.finish
   end
 
-  def sortAlbums(sort,rank)
-  	case sort
-  	when "rank" then return @album_hash
-  	when "name" then return @album_hash.sort_by { |x,y| x}
-  	when "year" then return @album_hash.sort_by { |x,y| y}
-  	end 
-   end
 end
 
 Rack::Handler::WEBrick.run Albums.new, :Port => 8080
