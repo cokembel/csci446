@@ -6,6 +6,8 @@ DataMapper.setup(:default, "sqlite://{Dir.pwd}/albums.sqlite3.db")
 
 set :port, 8080
 
-get "/form" do 
-	"Sinatra is working"
+get '/form' do
+	erb :albumForm.html
 end
+
+
