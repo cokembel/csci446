@@ -37,8 +37,10 @@ class Albums
 
   def render_list(request)
 
-  	response = Rack::Response.new
 
+  	response = Rack::Response.new(ERB.new(File.read("sortedList.html.erb")).result(binding))
+    response.finish
+=begin
   	File.open("sortedList.html", "rb") { |form| response.write(form.read)}
 
   	get_values = request.GET()
@@ -53,7 +55,9 @@ class Albums
     database = SQLite3::Database.new("albums.sqlite3.db")
     database.results_as_hash = true
 
-    database.execute("SELECT * FROM albums ORDER BY #{sort}") do |album|
+    albums = database.execute("SELECT * FROM albums ORDER BY #{sort}")
+
+    albums.each do |album|
       if album['rank'].to_i == rank.to_i
 
         response.write("<tr style=\"background-color:yellow\"><td>#{album[0]}</td><td>#{album[1]}</td><td>#{album[2]}</td></tr>")
@@ -65,6 +69,7 @@ class Albums
   	response.write("</table>")
   	response.write("</body></html>")
   	response.finish
+=end
   end
 
 end
