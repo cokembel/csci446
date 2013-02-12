@@ -5,21 +5,8 @@ require 'sqlite3'
 
 class Albums
 
-  def initialize
-    @album_hash = Hash.new
-  	values = IO.readlines('top_100_albums.txt')
-
-  	values.each { |line| line.chomp }
-
-  	values.each { |line| line = line.split(",")
-      @album_hash[line.at(0)] = line.at(1)
-  	}
-
-  end
-
   def call(env)
   	request = Rack::Request.new(env)
-
 
   	case request.path
   	when "/form" then render_form(request)
@@ -34,7 +21,6 @@ class Albums
   end
 
   def render_list(request)
-
 
     get_values = request.GET()
 

@@ -8,7 +8,9 @@
 	<h3>Sorted by <%= sort %></h3>
 	<table>
 		<% albums.each do |album| %>
-		<tr>
+		<tr <% if album['rank'].to_i == rank.to_i %>
+			<%= 'style="background-color:yellow"' %>
+			<% end %> >
 			<td><%= album['rank'] %></td>
 			<td><%= album['title'] %> </td>
 			<td><%= album['year'] %> </td>
