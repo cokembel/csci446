@@ -87,12 +87,14 @@ class Albums
     end
 =end
     database = SQLite3::Database.new("albums.sqlite3.db")
+    database.results_as_hash = true
 
     database.execute("SELECT * FROM albums ORDER BY #{sort}") do |album|
-      if album[0].to_i == rank.to_i
+      if album['rank'].to_i == rank.to_i
+
         response.write("<tr style=\"background-color:yellow\"><td>#{album[0]}</td><td>#{album[1]}</td><td>#{album[2]}</td></tr>")
       else
-        response.write("<tr><td>#{album[0]}</td><td>#{album[1]}</td><td>#{album[2]}</td></tr>")
+        response.write("<tr><td>#{album['rank']}</td><td>#{album['title']}</td><td>#{album['year']}</td></tr>")
       end
     end
 
