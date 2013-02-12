@@ -13,7 +13,7 @@ end
 post '/display_list' do
 	@sort_by = params[:sortBy]
 	@rank = params[:rank]
-	@albums = Album.all
+	@albums = Album.all(:order => @sort_by.intern.asc)
 	erb :sortedList
 end
 
