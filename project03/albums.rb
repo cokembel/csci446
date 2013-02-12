@@ -4,8 +4,6 @@ require 'erb'
 require 'sqlite3'
 
 class Albums
-  
-  @album_hash 
 
   def initialize
     @album_hash = Hash.new
@@ -38,38 +36,17 @@ class Albums
   def render_list(request)
 
 
-  	response = Rack::Response.new(ERB.new(File.read("sortedList.html.erb")).result(binding))
-    response.finish
-=begin
-  	File.open("sortedList.html", "rb") { |form| response.write(form.read)}
+    get_values = request.GET()
 
-  	get_values = request.GET()
-
-  	sort = get_values['sortBy']
-  	rank = get_values['rank']
-
-  	response.write("<h3>Sorted By #{sort}</h3>");
-
-    response.write("<table>")
+    sort = get_values['sortBy']
+    rank = get_values['rank']
 
     database = SQLite3::Database.new("albums.sqlite3.db")
     database.results_as_hash = true
-
     albums = database.execute("SELECT * FROM albums ORDER BY #{sort}")
 
-    albums.each do |album|
-      if album['rank'].to_i == rank.to_i
-
-        response.write("<tr style=\"background-color:yellow\"><td>#{album[0]}</td><td>#{album[1]}</td><td>#{album[2]}</td></tr>")
-      else
-        response.write("<tr><td>#{album['rank']}</td><td>#{album['title']}</td><td>#{album['year']}</td></tr>")
-      end
-    end
-
-  	response.write("</table>")
-  	response.write("</body></html>")
+    response = Rack::Response.new(ERB.new(File.read("sortedList.html.erb")).result(binding))
   	response.finish
-=end
   end
 
 end
