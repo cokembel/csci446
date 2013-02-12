@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 require 'rack'
+require 'erb'
+require 'sqlite3'
 
 class Albums
   
@@ -56,6 +58,8 @@ class Albums
   end
 
   def render_list(request)
+
+=begin
   	response = Rack::Response.new
 
   	File.open("sortedList.html", "rb") { |form| response.write(form.read)}
@@ -80,6 +84,12 @@ class Albums
       end
 
       count += 1
+    end
+=end
+    database = SQLite3::Database.new("albus.sqlite3")
+
+    database.execute("SELECT * FROM albums") do |album|
+      response.write("<tr><td>#{count}</td><td>#{album}</td><td>#{year}</td></tr>")
     end
 
   	response.write("</table>")
