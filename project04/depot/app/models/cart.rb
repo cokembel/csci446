@@ -10,4 +10,8 @@ class Cart < ActiveRecord::Base
 		end
 		current_item
 	end
+
+	def total_price
+		product.price * quantity
+	end
 end
