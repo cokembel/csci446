@@ -1,4 +1,23 @@
 class LineItemsController < ApplicationController
+  def create
+    @cart = current_cart
+    product = Product.find(params[:product_id])
+    @line_item = @cart.line_items.build(:product => product)
+
+    respond_to do |format|
+      if @line_item.save
+        format.html { redirect_to(@line_item.cart,
+          :notice => 'Line item was successfully created.') }
+        format.xml { render :xml => @line_item,
+          :status => :created, :location => @line_item }
+        else
+          format.html { render :action => "new" }
+          format.xml { render :xml => @line_item.errors,
+            :status => :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /line_items
   # GET /line_items.json
   def index
@@ -35,22 +54,6 @@ class LineItemsController < ApplicationController
   # GET /line_items/1/edit
   def edit
     @line_item = LineItem.find(params[:id])
-  end
-
-  # POST /line_items
-  # POST /line_items.json
-  def create
-    @line_item = LineItem.new(params[:line_item])
-
-    respond_to do |format|
-      if @line_item.save
-        format.html { redirect_to @line_item, notice: 'Line item was successfully created.' }
-        format.json { render json: @line_item, status: :created, location: @line_item }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @line_item.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PUT /line_items/1
