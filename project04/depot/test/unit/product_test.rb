@@ -7,23 +7,28 @@ class ProductTest < ActiveSupport::TestCase
 	  product = Product.new
 	  assert product.invalid?
 	  assert product.errors[:title].any?
-	  assert product.errors[:descritption].any?
+	  assert product.errors[:description].any?
 	  assert product.errors[:price].any?
 	  assert product.errors[:image_url].any?
   end
 
   test "product price must be positive" do
-  	product = Product.new(:title => "My Book Title",
-  						  :descritption => "yyy",
-  						  :image_url => "zzz.jpg")
-  	product.price = -1
-  	assert product.invald?
-  	assert_equal "must be greater than or equal to 0.01", 
-  		product.error[:price].join('; ')
+    product = Product.new(:title => "My Book Title" ,
+                          :description => "yyy" ,
+                          :image_url => "zzz.jpg" )
+    product.price = -1
+    assert product.invalid?
+    assert_equal "must be greater than or equal to 0.01" ,
+      product.errors[:price].join('; ' )
 
-  	product.price = 1
-  	assert product.valid?
-  end
+    product.price = 0
+    assert product.invalid?
+    assert_equal "must be greater than or equal to 0.01" ,
+      product.errors[:price].join('; ' )
+      
+    product.price = 1
+    assert product.valid?
+end
 
   test "image url" do
   	ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.jpg
@@ -35,7 +40,7 @@ class ProductTest < ActiveSupport::TestCase
   	end
 
   	bad.each do |name|
-  		assert new_product(name).invalud?, "#{name} shouldn't be valid"
+  		assert new_product(name).invalid?, "#{name} shouldn't be valid"
   	end
   end
 
@@ -51,7 +56,7 @@ class ProductTest < ActiveSupport::TestCase
 
   def new_product(image_url)
   	Product.new(:title => "My Book Title",
-  				:descritption => "yyy",
+  				:description => "yyy",
   				:price => 1,
   				:image_url => image_url)
   end
